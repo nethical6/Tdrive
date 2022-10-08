@@ -1,6 +1,8 @@
 from calendar import prmonth
 import json
 import os
+from pickle import TRUE
+from xmlrpc.client import boolean
 from utils.files import files
 class shell():
 	prompt = "$"
@@ -34,12 +36,15 @@ class shell():
 		if(len(cmd)<2):
 			print("mkdir: missing operand")
 			return 0
-		x = self.getPwd()
-		oldOcc = str(x)
-		x["subdirs"].append(files.createNewfolder(cmd[1]))
-		str(self.folder).replace(oldOcc,str(x),1)
-		files.updateFileSystemChanges(self.folder)
-		print("created "+ cmd[1])
+		if(shell.fileDoesntExists(self.getPwd(),cmd[1])):
+			x = self.getPwd()
+			oldOcc = str(x)
+			x["subdirs"].append(files.createNewfolder(cmd[1]))
+			str(self.folder).replace(oldOcc,str(x),1)
+			files.updateFileSystemChanges(self.folder)
+			print("created "+ cmd[1])
+		else:
+			print("file/folder with the same name already exists...")
 
 	def ls(self,cmd):
 		x = self.getPwd()
@@ -77,12 +82,17 @@ class shell():
 		if(len(cmd)<2):
 			print("touch: missing operand")
 			return 0
-		x = self.getPwd()
-		oldOcc = str(x)
-		x["subdirs"].append(files.createEmptyFile(cmd[1]))
-		str(self.folder).replace(oldOcc,str(x),1)
-		files.updateFileSystemChanges(self.folder)
-		print("created "+ cmd[1])
+		if(shell.fileDoesntExists(self.getPwd(),cmd[1])):
+			x = self.getPwd()
+			oldOcc = str(x)
+			x["subdirs"].append(files.createEmptyFile(cmd[1]))
+			str(self.folder).replace(oldOcc,str(x),1)
+			files.updateFileSystemChanges(self.folder)
+			print("created "+ cmd[1])
+			return
+		else:
+			print("file/folder with the same name already exists...")
+
 		
 	def getPwd(self)->dict:
 		s = str(self.pwd).split("/")
@@ -91,3 +101,8 @@ class shell():
 			x = x["subdirs"][int(i)]
 			
 		return x
+
+	def fileDoesntExists(x,name) -> boolean:
+		for i in x["subdirs"]:
+			if (i["name"] == name): return False
+		return TRUE
