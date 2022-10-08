@@ -1,5 +1,6 @@
 import json
 import os
+from random import randint
 
 class files:
     def toJSON(self):
@@ -12,10 +13,12 @@ class files:
         f = open("./data/filesystem.json", "w")
         list = { 
             "type":"directory",
-            "name":"Root",
+            "name":"root",
+            "id": hash("root"),
             "subdirs":[ { 
             "type":"directory",
             "name":"home",
+            "id": hash('home'),
             "subdirs":[
         ]}
         ]}
@@ -26,6 +29,7 @@ class files:
         return {
             "type":"directory",
             "name":name,
+            "id": hash(name),
             "subdirs":[]
             }
 
@@ -33,3 +37,11 @@ class files:
         f = open("./data/filesystem.json", "w")
         f.write(json.dumps(folder))
         f.close
+
+    def createEmptyFile(name):
+        return {
+            "type":"document",
+            "name":name,
+            "id": hash(name),
+            "tlink":"nethical.me"
+            }

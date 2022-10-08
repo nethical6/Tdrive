@@ -21,7 +21,8 @@ class shell():
 			shell.ls(self,cmd)
 		elif(cmd[0]== 'cd'):
 			shell.cd(self,cmd)
-	
+		elif(cmd[0] == 'touch'):
+			shell.touch(self,cmd)
 		elif[cmd[0]=="clear"]:
 			os.system('clear')
 
@@ -59,13 +60,27 @@ class shell():
 
 		else:
 			for index,item in enumerate(self.getPwd()["subdirs"]):
+				
 				if(item["name"] == cmd[1]):
+					if(item["type"]=="document"):
+						print("cd: %s: Not a directory" % item["name"])
+						return
 					self.pwd+='/'+str(index)
 					self.prompt+="/"+item["name"]
 					return
 			print("Folder doesnot exists")
 		
-
+	def touch(self,cmd):
+		if(len(cmd)<2):
+			print("touch: missing operand")
+			return 0
+		x = self.getPwd()
+		oldOcc = str(x)
+		x["subdirs"].append(files.createEmptyFile(cmd[1]))
+		str(self.folder).replace(oldOcc,str(x),1)
+		files.updateFileSystemChanges(self.folder)
+		print("created "+ cmd[1])
+		
 	def getPwd(self)->dict:
 		s = str(self.pwd).split("/")
 		x = self.folder
