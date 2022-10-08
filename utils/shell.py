@@ -44,7 +44,10 @@ class shell():
 	def ls(self,cmd):
 		x = self.getPwd()
 		for i in x["subdirs"]:
-			print(i["name"])
+			if(i["type"]=="directory"):
+				print("\033[91m {}\033[00m" .format(i["name"]))
+			else:
+				print(i["name"])
 
 
 	def cd(self,cmd):
