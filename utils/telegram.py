@@ -3,10 +3,13 @@ import json
 import pyrogram
 from utils.files import files
 import os
+import time
 
 class telegram:
+
     creds = {}
     app = None
+
     def __init__(self) -> None:
         self.creds = telegram.getCreds(self)
         self.app = pyrogram.Client("my_account", self.creds["id"], self.creds["hash"])
@@ -41,8 +44,10 @@ class telegram:
         d = json.loads(f.read())
         return d
 
+    def sendDocument(self,path):
+        app = self.app
+        with app:
+            app.send_document("me",path,progress=telegram.sendingProgress)
 
-    def getApp(self) -> pyrogram.client:
-        return self.app
-
-    
+    def sendingProgress(current, total):
+        print("\r" + f"Progress: {current * 100 / total:.1f}%")
