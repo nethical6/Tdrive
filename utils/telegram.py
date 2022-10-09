@@ -47,9 +47,16 @@ class telegram:
     def sendDocument(self,path) -> str:
         app = self.app
         with app:
-            app.send_document("me",path,progress=telegram.sendingProgress)
+            app.send_document("me",path,progress=telegram.progress)
             for x in app.get_chat_history("me",1):
                 return str(x.document.file_id)
 
-    def sendingProgress(current, total):
+    def downloadDocument(self,fileid,filename):
+        app = self.app
+        with app:
+            app.download_media(fileid,"./downloads/"+ filename,progress=telegram.progress)
+
+            
+    def progress(current, total):
+        if(total == 0): return
         print("\r" + f"Progress: {current * 100 / total:.1f}%",end="")

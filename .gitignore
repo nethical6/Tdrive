@@ -1,5 +1,6 @@
 **/data
 **/cache
+**/downloads
 *.pyc
 *.json
 *.session

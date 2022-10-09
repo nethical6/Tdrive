@@ -1,6 +1,7 @@
 
 import json
 import os
+from re import A
 from utils.files import files
 from utils.telegram import telegram
 class shell():
@@ -26,6 +27,8 @@ class shell():
 			shell.touch(self,cmd)
 		elif(cmd[0] == 'upload'):
 			shell.upload(self,cmd)
+		elif(cmd[0] == 'download'):
+			shell.download(self,cmd)
 		elif[cmd[0]=="clear"]:
 			os.system('clear')
 
@@ -96,12 +99,32 @@ class shell():
 
 		
 	def upload(self,cmd):
-		if(len(cmd)<3):
+		if(len(cmd)<2):
 			print("touch: missing operand")
 			return 0
 		tg = telegram()
 		a = tg.sendDocument(cmd[1])
-		print("fileid: " + a)
+
+		x = self.getPwd()
+		oldOcc = str(x)
+		filename = str(cmd[1]).rsplit('/', 1)[1]
+		x["subdirs"].append(files.createEmptyFile(filename,a))
+		str(self.folder).replace(oldOcc,str(x),1)
+		files.updateFileSystemChanges(self.folder)
+		print("\n created "+ cmd[1])
+		
+	def download(self,cmd):
+		if(len(cmd)<2):
+			print("touch: missing operand")
+			return 0
+		x = self.getPwd()
+		for i in x["subdirs"]:
+			if(i["type"] == "document" and i["name"] == cmd[1]):
+				tg = telegram()
+				tg.downloadDocument(i["file_id"],i["name"])
+				print("\n Saved to ./downloads directory")
+		
+		
 
 	def getPwd(self)->dict:
 		s = str(self.pwd).split("/")

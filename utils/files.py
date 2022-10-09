@@ -1,6 +1,5 @@
 import json
 import os
-from random import randint
 
 class files:
     def toJSON(self):
@@ -11,6 +10,8 @@ class files:
 
         if not os.path.exists("./data"):
            os.makedirs("./data")
+        if not os.path.exists("./downloads"):
+           os.makedirs("./downloads")
 
 
         if (os.path.exists("./data/filesystem.json")):
@@ -43,10 +44,10 @@ class files:
         f.write(json.dumps(folder))
         f.close
 
-    def createEmptyFile(name):
+    def createEmptyFile(name,fileid="0"):
         return {
             "type":"document",
             "name":name,
             "id": hash(name),
-            "tlink":"nethical.me"
+            "file_id" : fileid
             }
