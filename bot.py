@@ -1,6 +1,6 @@
 from utils.shell import shell
 from utils.files import files
-
+from utils.telegram import telegram
 print('''
     
          _____   _      _           
@@ -16,5 +16,8 @@ print('''
         ''')
 
 files.generateFileSystem()
+
+telegram()
+
 f = open("./data/filesystem.json", "r")
 shell(f.read())
