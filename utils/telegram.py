@@ -44,10 +44,12 @@ class telegram:
         d = json.loads(f.read())
         return d
 
-    def sendDocument(self,path):
+    def sendDocument(self,path) -> str:
         app = self.app
         with app:
             app.send_document("me",path,progress=telegram.sendingProgress)
+            for x in app.get_chat_history("me",1):
+                return str(x.document.file_id)
 
     def sendingProgress(current, total):
         print("\r" + f"Progress: {current * 100 / total:.1f}%",end="")

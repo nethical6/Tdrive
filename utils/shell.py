@@ -1,9 +1,8 @@
-from calendar import prmonth
+
 import json
 import os
-from pickle import TRUE
-from xmlrpc.client import boolean
 from utils.files import files
+from utils.telegram import telegram
 class shell():
 	prompt = "$"
 	pwd = "0"
@@ -25,6 +24,8 @@ class shell():
 			shell.cd(self,cmd)
 		elif(cmd[0] == 'touch'):
 			shell.touch(self,cmd)
+		elif(cmd[0] == 'upload'):
+			shell.upload(self,cmd)
 		elif[cmd[0]=="clear"]:
 			os.system('clear')
 
@@ -94,6 +95,14 @@ class shell():
 			print("file/folder with the same name already exists...")
 
 		
+	def upload(self,cmd):
+		if(len(cmd)<3):
+			print("touch: missing operand")
+			return 0
+		tg = telegram()
+		a = tg.sendDocument(cmd[1])
+		print("fileid: " + a)
+
 	def getPwd(self)->dict:
 		s = str(self.pwd).split("/")
 		x = self.folder
@@ -102,7 +111,7 @@ class shell():
 			
 		return x
 
-	def fileDoesntExists(x,name) -> boolean:
+	def fileDoesntExists(x,name) -> bool:
 		for i in x["subdirs"]:
 			if (i["name"] == name): return False
-		return TRUE
+		return True
