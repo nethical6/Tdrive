@@ -1,7 +1,6 @@
 
 import json
 import os
-from re import A
 from utils.files import files
 from utils.telegram import telegram
 class shell():
@@ -29,12 +28,21 @@ class shell():
 			shell.upload(self,cmd)
 		elif(cmd[0] == 'download'):
 			shell.download(self,cmd)
-		elif[cmd[0]=="clear"]:
+		elif(cmd[0]=="clear"):
 			os.system('clear')
+		else:
+			print("command not found. Run help to get a list of available commands")
 
 	def help(self):
-		print(" no help for u")
-		print(self.folder)
+		print('''
+	help - display a list of available commands \n
+	cd [directory name] - change the working directory \n
+	mkdir [directory name] - Create a new Directory\n
+	clear - clear the screen \n
+	ls - list out all the files and folders in the current working directory \n
+	upload [path to file on localdevice] - Upload a file \n
+	download [name of the file to download] - Download a file from server \n
+		''')
 
 	def mkdir(self,cmd):
 		if(len(cmd)<2):
