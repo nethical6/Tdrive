@@ -8,6 +8,11 @@ class files:
         sort_keys=True)
     
     def generateFileSystem():
+
+        if not os.path.exists("./data"):
+           os.makedirs("./data")
+
+
         if (os.path.exists("./data/filesystem.json")):
             return
         f = open("./data/filesystem.json", "w")
