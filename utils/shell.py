@@ -30,6 +30,8 @@ class shell():
 			shell.download(self,cmd)
 		elif(cmd[0]=="clear"):
 			os.system('clear')
+		elif(cmd[0]=="rm"):
+			shell.rm(self,cmd)
 		else:
 			print("command not found. Run help to get a list of available commands")
 
@@ -42,6 +44,7 @@ class shell():
 	ls - list out all the files and folders in the current working directory \n
 	upload [path to file on localdevice] - Upload a file \n
 	download [name of the file to download] - Download a file from server \n
+	rm [file/folder] - delete a file or folder
 		''')
 
 	def mkdir(self,cmd):
@@ -132,7 +135,18 @@ class shell():
 				tg.downloadDocument(i["file_id"],i["name"])
 				print("\n Saved to ./downloads directory")
 		
-		
+	def rm(self,cmd):
+		if(len(cmd)<2):
+			print("touch: missing operand")
+			return 0
+		if(not shell.fileDoesntExists(self.getPwd(),cmd[1])):
+			oldOcc = str(self.getPwd())
+			str(self.folder).replace(oldOcc,"")
+			files.updateFileSystemChanges(self.folder)
+			print("deleted"+ cmd[1])
+			return
+		else:
+			print("file/folder with the same name already exists...")
 
 	def getPwd(self)->dict:
 		s = str(self.pwd).split("/")
@@ -146,3 +160,4 @@ class shell():
 		for i in x["subdirs"]:
 			if (i["name"] == name): return False
 		return True
+	
