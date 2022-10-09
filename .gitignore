@@ -3,3 +3,5 @@
 *.pyc
 *.json
 *.session
+# bcus i use jar files to test uploading files
+*.jar 

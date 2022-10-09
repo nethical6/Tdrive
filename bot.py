@@ -17,8 +17,8 @@ print('''
 
 files.generateFileSystem()
 
-baka = telegram()
-baka.sendDocument("./README.md")
+telegram()
+
 
 f = open("./data/filesystem.json", "r")
 shell(f.read())

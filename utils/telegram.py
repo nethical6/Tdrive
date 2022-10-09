@@ -50,4 +50,4 @@ class telegram:
             app.send_document("me",path,progress=telegram.sendingProgress)
 
     def sendingProgress(current, total):
-        print("\r" + f"Progress: {current * 100 / total:.1f}%")
+        print("\r" + f"Progress: {current * 100 / total:.1f}%",end="")
